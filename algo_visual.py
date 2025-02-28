@@ -3,6 +3,8 @@ from tkinter import messagebox
 import random
 import time
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
 
 
 # Bubble Sort
@@ -207,15 +209,27 @@ def display_chart(times):
     # Generates random colors for each bar for better contrast
     colors = [(random.random(), random.random(), random.random()) for _ in algorithms]
 
-    ax.bar(algorithms, execution_times, color=colors)
+    # Initialize bars with zero height
+    bars = ax.bar(algorithms, [0] * len(algorithms), color=colors)
     # Axes labels and title
     ax.set_xlabel("Algorithms")
     ax.set_ylabel("Execution Time (microseconds)")
     ax.set_title("Execution Time of Sorting Algorithms")
     ax.set_ylim(0, max(execution_times) * 1.1)
 
+    total_frames = 30  # Number of frames for animation
+
+    def update(frame):
+        progress = frame / total_frames  # Normalize frame between 0 and 1
+        for i, bar in enumerate(bars):
+            new_height = execution_times[i] * progress  # Scale height proportionally
+            bar.set_height(new_height)
+
+    animation = FuncAnimation(fig, update, frames = 30,interval=100, repeat=False)
+
     plt.show()
 
+    
 
 # Toggle target input for linear search
 def toggle_target_input():
@@ -275,5 +289,7 @@ for algorithm, var in algorithm_vars.items():
 # Button to run the selected algorithms
 run_button = tk.Button(root, text="Run Algorithms", command=run_algorithms)
 run_button.pack()
+
+
 
 root.mainloop()
