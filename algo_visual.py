@@ -226,7 +226,7 @@ def display_chart(times):
             bar.set_height(new_height)
 
     animation = FuncAnimation(fig, update, frames = 30,interval=100, repeat=False)
-
+    plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
 
     
